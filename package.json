@@ -1,0 +1,50 @@
+{
+	"name": "dts-generate",
+	"version": "1.0.0",
+	"description": "Generate TypeScript definitions for anything",
+	"main": "dist/index.js",
+	"files": [
+		"dist"
+	],
+	"bin": {
+		"dts": "dist/cli.js"
+	},
+	"scripts": {
+		"prepublishOnly": "del dist; tsc",
+		"reset": "del dist node_modules",
+		"start": "del dist; mkdir dist; run-p start:*",
+		"start:node": "nodemon -q dist/cli.js got",
+		"start:tsc": "tsc -w",
+		"test": "del dist; tsc; node dist/cli.js got"
+	},
+	"dependencies": {
+		"lodash.startcase": "^4.4.0",
+		"mri": "^1.1.4",
+		"typescript": "^3.4.1"
+	},
+	"devDependencies": {
+		"@types/lodash.startcase": "^4.4.6",
+		"@types/mri": "^1.1.0",
+		"@types/node": "^11.12.2",
+		"del-cli": "^1.1.0",
+		"nodemon": "^1.18.10",
+		"npm-run-all": "^4.1.5"
+	},
+	"keywords": [
+		"declarations",
+		"definitions",
+		"dts",
+		"generate",
+		"generation",
+		"generator",
+		"ts",
+		"type",
+		"types",
+		"typescript"
+	],
+	"license": "Unlicense",
+	"author": "Robert Laverty <roblav96@gmail.com> (https://github.com/roblav96)",
+	"homepage": "https://github.com/roblav96/dts-generate#readme",
+	"repository": "github:roblav96/dts-generate",
+	"bugs": "https://github.com/roblav96/dts-generate/issues"
+}
