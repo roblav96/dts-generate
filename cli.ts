@@ -9,6 +9,6 @@ async function start() {
 	if (!arg) throw new Error('Input argument is undefined')
 	let pkg = require(arg)
 	let output = await dts(pkg, arg, true)
-	console.log(`\n${output}\n`)
+	console.log(`\n\n${output}\n\n`)
 }
 start().catch(error => console.error(`dts-generate Error ->`, error))

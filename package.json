@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"files": [

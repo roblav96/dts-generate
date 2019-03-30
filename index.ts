@@ -12,7 +12,7 @@ function generate(value: any, name = '____', silent = false) {
 		name = startcase(name).replace(/\s+/g, '')
 		let raw = generateTypesForGlobal(name, value, settings)
 		let output = raw.replace(/;/g, '').trim()
-		if (!silent) console.log(`\n${output}\n`)
+		if (!silent) console.log(`\n\n${output}\n\n`)
 		return output
 	})
 }
