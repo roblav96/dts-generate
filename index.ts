@@ -3,7 +3,7 @@ import * as keys from 'all-keys'
 import { cloneDeep, isArray, isPlainObject, isNull, startCase } from 'lodash'
 
 function fix(value: any) {
-	value &&
+	if (value) {
 		keys(value).forEach(k => {
 			let v = value[k]
 			if (isArray(v)) {
@@ -16,6 +16,7 @@ function fix(value: any) {
 				value[k] = undefined
 			}
 		})
+	}
 	return value
 }
 
