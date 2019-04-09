@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.0.2",
+	"version": "1.0.3",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"files": [
@@ -18,7 +18,8 @@
 		"test": "del dist; tsc; node dist/cli.js got"
 	},
 	"dependencies": {
-		"lodash.startcase": "^4.4.0",
+		"all-keys": "^3.1.0",
+		"lodash": "^4.17.11",
 		"mri": "^1.1.4",
 		"typescript": "^3.4.1"
 	},
