@@ -1,21 +1,15 @@
 import { FormatCodeSettings } from 'typescript/lib/typescript'
-import * as keys from 'all-keys'
-import { cloneDeep, isArray, isPlainObject, isNull, startCase } from 'lodash'
+import { cloneDeep, mapValues, isArray, isPlainObject, isNull, startCase } from 'lodash'
 
-function fix(value: any) {
-	if (value) {
-		keys(value).forEach(k => {
-			let v = value[k]
-			if (isArray(v)) {
-				v.forEach(fix)
-			}
-			if (isPlainObject(v)) {
-				fix(v)
-			}
-			if (isNull(v)) {
-				value[k] = undefined
-			}
-		})
+function iteratee(value: any, key: string, object: any) {
+	if (isNull(value)) {
+		return undefined
+	}
+	if (isArray(value)) {
+		return value.map(v => (Object(v) === v ? mapValues(v, iteratee) : v))
+	}
+	if (isPlainObject(value)) {
+		return mapValues(value, iteratee)
 	}
 	return value
 }
@@ -26,10 +20,11 @@ function generate(value: any, name = '', silent = false) {
 		getDefaultFormatCodeSettings,
 	}) {
 		let settings = Object.assign(getDefaultFormatCodeSettings(), {
-			convertTabsToSpaces: false,
+			convertTabsToSpaces: true,
 		} as FormatCodeSettings)
 		name = (name && startCase(name).replace(/\s+/g, '')) || '____'
-		let raw = generateTypesForGlobal(name, fix(cloneDeep(value)), settings)
+		value = Object(value) === value ? mapValues(cloneDeep(value), iteratee) : value
+		let raw = generateTypesForGlobal(name, value, settings)
 		let output = raw.replace(/;/g, '').trim()
 		if (!silent) console.log(output)
 		return output
