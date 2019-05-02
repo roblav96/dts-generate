@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.0.8",
+	"version": "1.1.1",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"files": [
@@ -13,9 +13,9 @@
 		"prepublishOnly": "del dist; tsc",
 		"reset": "del dist node_modules",
 		"start": "del dist; mkdir dist; run-p start:*",
-		"start:node": "nodemon -q dist/cli.js got",
+		"start:node": "nodemon -q dist/cli.js",
 		"start:tsc": "tsc -w",
-		"test": "del dist; tsc; node dist/cli.js got"
+		"test": "del dist; tsc; node dist/cli.js"
 	},
 	"dependencies": {
 		"lodash": "^4.17.11",
@@ -23,6 +23,7 @@
 		"typescript": "^3.4.1"
 	},
 	"devDependencies": {
+		"@types/lodash": "^4.14.123",
 		"@types/mri": "^1.1.0",
 		"@types/node": "^11.12.2",
 		"del-cli": "^1.1.0",
