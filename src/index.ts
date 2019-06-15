@@ -1,3 +1,4 @@
+import 'node-env-dev'
 import * as _ from 'lodash'
 
 function combine(value: object) {
