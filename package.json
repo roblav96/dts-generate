@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.1.1",
+	"version": "1.2.0",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"files": [
@@ -9,26 +9,36 @@
 	"bin": {
 		"dts": "dist/cli.js"
 	},
+	"nodemonConfig": {
+		"exec": "node -r node-env-dev dist/test.js",
+		"delay": "100",
+		"ext": "js",
+		"restartable": false,
+		"watch": "dist"
+	},
 	"scripts": {
-		"prepublishOnly": "del dist; tsc",
-		"reset": "del dist node_modules",
-		"start": "del dist; mkdir dist; run-p start:*",
-		"start:node": "nodemon -q dist/cli.js",
-		"start:tsc": "tsc -w",
-		"test": "del dist; tsc; node dist/cli.js"
+		"prepublishOnly": "del dist; tsc -d",
+		"del": "del dist node_modules",
+		"start": "del dist; run-p -s start:*",
+		"start:tsc": "tsc -w -i",
+		"start:node": "just-wait -s -p dist; sleep 0.1; nodemon -q --inspect",
+		"test": "del dist; tsc || true; node dist/test.js"
 	},
 	"dependencies": {
+		"dts-gen": "^0.5.8",
 		"lodash": "^4.17.11",
-		"mri": "^1.1.4",
-		"typescript": "^3.4.1"
+		"mri": "^1.1.4"
 	},
 	"devDependencies": {
-		"@types/lodash": "^4.14.123",
+		"@types/lodash": "^4.14.134",
 		"@types/mri": "^1.1.0",
-		"@types/node": "^11.12.2",
-		"del-cli": "^1.1.0",
-		"nodemon": "^1.18.10",
-		"npm-run-all": "^4.1.5"
+		"@types/node": "^12.0.8",
+		"del-cli": "^2.0.0",
+		"just-wait": "^1.0.11",
+		"node-env-dev": "^1.2.6",
+		"nodemon": "^1.19.1",
+		"npm-run-all": "^4.1.5",
+		"typescript": "^3.5.2"
 	},
 	"keywords": [
 		"declarations",
