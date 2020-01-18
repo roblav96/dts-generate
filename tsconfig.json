@@ -1,12 +1,17 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
+		"experimentalDecorators": true,
 		"lib": ["esnext"],
+		"module": "commonjs",
+		"moduleResolution": "node",
 		"noErrorTruncation": true,
+		"noImplicitThis": true,
 		"outDir": "dist",
 		"preserveWatchOutput": true,
 		"sourceMap": true,
-		"target": "es5"
+		"target": "es2015"
 	},
-	"exclude": ["node_modules", "dist"],
-	"include": ["types/**/*.d.ts", "src/**/*.ts"]
+	"exclude": ["dist", "node_modules"],
+	"include": ["src/**/*.ts"]
 }

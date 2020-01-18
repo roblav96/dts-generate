@@ -1,7 +1,8 @@
+import 'node-env-dev'
 import '.'
 import * as _ from 'lodash'
 
-process.nextTick(() => global.dts(MOCK, `MOCK`))
+process.nextTick(() => console.dts(MOCK))
 
 const MOCK = {
 	movie: {
