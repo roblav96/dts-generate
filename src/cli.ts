@@ -1,17 +1,59 @@
 #!/usr/bin/env node
 
-import '.'
+import * as deepmerge from 'deepmerge'
+import * as anything from 'merge-anything'
+import * as dts from '.'
+import * as fs from 'fs-extra'
 import * as mri from 'mri'
+import * as path from 'path'
 
 process.nextTick(async () => {
-	try {
-		let argvs = mri(process.argv.slice(2))
-		let arg = Array.isArray(argvs._) && (argvs._[0] as string)
-		if (!arg) throw new Error('Command argument is not a valid NodeRequire module')
-		await console.dts(require(arg))
-	} catch (error) {
-		console.error(`[dts-generate] '${process.argv.slice(1)}' -> %O`, error)
-	} finally {
-		process.exit(0)
+	let argvs = mri(process.argv.slice(2))
+
+	let inputs = argvs._ as string[]
+	if (!Array.isArray(inputs) || inputs.length == 0) {
+		throw new Error(
+			`dts-generate argument requires a valid NodeRequire module or json file, example: 'dts-generate lodash'`,
+		)
+	}
+
+	let values = [] as { identifier: string; value: any }[]
+	for (let input of inputs) {
+		try {
+			let filepath = path.resolve(process.cwd(), input)
+			if (await fs.pathExists(filepath)) {
+				values.push({
+					identifier: path.basename(filepath),
+					value: await fs.readJson(filepath),
+				})
+			} else {
+				values.push({
+					identifier: input,
+					value: require(input),
+				})
+			}
+		} catch (error) {
+			console.error(`Invalid NodeRequire module or json file '${input}' -> %O`, error)
+		}
+	}
+
+	if (values.length > 0) {
+		if (argvs.merge) {
+			values = [
+				values.reduce((target, value, index) => {
+					target.identifier = `${target.identifier} ${value.identifier}`
+					target.value = deepmerge(target.value, value.value)
+					return target
+				}),
+			]
+			console.log(`${values[0].identifier} ->`, values[0].value)
+		}
+		for (let value of values) {
+			try {
+				console.log(`${value.identifier} ->`, await dts(value.value, value.identifier))
+			} catch (error) {
+				console.error(`${value.identifier} -> %O`, error)
+			}
+		}
 	}
 })
