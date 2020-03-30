@@ -1,20 +1,24 @@
 import * as _ from 'lodash'
-import { pascalCase } from 'string-fn'
+import * as stringFn from 'string-fn'
 
-function combine(value: object) {
+function combine(value: any) {
 	if (_.isArray(value) && value.find((v) => _.isPlainObject(v))) {
 		return [_.merge({}, ...value.map((v) => combine(v)))]
 	}
 	if (_.isPlainObject(value) && !_.isArray(value)) {
+		value = _.pickBy(value, (v) => !_.isNil(v))
 		return _.mapValues(value, (v) => combine(v))
 	}
 	return value
 }
 
 /** dynamically imports `typescript` into memory on-demand */
-async function generate(value: any, identifier = '____') {
+async function generate(value: any, identifier = '') {
 	let { generateIdentifierDeclarationFile } = await import('dts-gen')
-	let output = generateIdentifierDeclarationFile(pascalCase(identifier), combine(value)) as string
+	let output = generateIdentifierDeclarationFile(
+		stringFn.pascalCase(identifier) || '____',
+		combine(value),
+	) as string
 	output = output.replace(/[;]/g, '')
 	output = output.replace(/\015\n\015\n+/g, '\n')
 	output = output.replace(/    /g, '\t')

@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-import * as deepmerge from 'deepmerge'
-import * as anything from 'merge-anything'
 import * as dts from '.'
 import * as fs from 'fs-extra'
 import * as mri from 'mri'
@@ -24,7 +22,7 @@ process.nextTick(async () => {
 			if (await fs.pathExists(filepath)) {
 				values.push({
 					identifier: path.basename(filepath),
-					value: await fs.readJson(filepath),
+					value: [await fs.readJson(filepath)].flat(),
 				})
 			} else {
 				values.push({
@@ -37,23 +35,26 @@ process.nextTick(async () => {
 		}
 	}
 
-	if (values.length > 0) {
-		if (argvs.merge) {
-			values = [
-				values.reduce((target, value, index) => {
-					target.identifier = `${target.identifier} ${value.identifier}`
-					target.value = deepmerge(target.value, value.value)
-					return target
-				}),
-			]
-			console.log(`${values[0].identifier} ->`, values[0].value)
-		}
-		for (let value of values) {
-			try {
-				console.log(`${value.identifier} ->`, await dts(value.value, value.identifier))
-			} catch (error) {
-				console.error(`${value.identifier} -> %O`, error)
-			}
+	if (values.length == 0) {
+		throw new Error(`Empty input values`)
+	}
+
+	if (argvs.merge) {
+		values = [
+			values.reduce((target, value, index) => {
+				target.identifier = `${target.identifier} ${value.identifier}`
+				target.value = [...target.value, ...value.value]
+				return target
+			}),
+		]
+		// console.log(`${values[0].identifier} ->`, values[0].value)
+	}
+
+	for (let value of values) {
+		try {
+			console.log(`\n${value.identifier} ->\n`, await dts(value.value, value.identifier))
+		} catch (error) {
+			console.error(`${value.identifier} -> %O`, error)
 		}
 	}
 })
