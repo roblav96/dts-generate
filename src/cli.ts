@@ -52,7 +52,7 @@ process.nextTick(async () => {
 
 	for (let value of values) {
 		try {
-			console.log(`\n${value.identifier} ->\n`, await dts(value.value, value.identifier))
+			console.log(await dts(value.value, value.identifier))
 		} catch (error) {
 			console.error(`${value.identifier} -> %O`, error)
 		}

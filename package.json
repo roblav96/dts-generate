@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.4.2",
+	"version": "1.4.3",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"files": [
@@ -16,22 +16,22 @@
 	},
 	"dependencies": {
 		"dts-gen": "^0.6.0",
-		"fs-extra": "^9.0.0",
-		"lodash": "^4.17.15",
-		"mri": "^1.1.5",
-		"string-fn": "^2.11.0"
+		"fs-extra": "^9.0.1",
+		"lodash": "^4.17.20",
+		"mri": "^1.1.6",
+		"string-fn": "^2.12.2"
 	},
 	"devDependencies": {
-		"@types/fs-extra": "^8.1.0",
-		"@types/lodash": "^4.14.149",
+		"@types/fs-extra": "^9.0.1",
+		"@types/lodash": "^4.14.161",
 		"@types/mri": "^1.1.0",
-		"@types/node": "^13.9.5",
+		"@types/node": "^14.11.2",
 		"cross-env": "^7.0.2",
-		"del-cli": "^3.0.0",
-		"node-env-dev": "^1.8.22",
-		"nodemon": "^2.0.2",
-		"ts-node": "^8.8.1",
-		"typescript": "^3.8.3"
+		"del-cli": "^3.0.1",
+		"node-env-dev": "^1.9.0",
+		"nodemon": "^2.0.4",
+		"ts-node": "^9.0.0",
+		"typescript": "^4.0.3"
 	},
 	"keywords": [
 		"declarations",
