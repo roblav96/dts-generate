@@ -12,7 +12,7 @@ function combine(value: any) {
 	return value
 }
 
-/** dynamically imports `typescript` into memory on-demand */
+/** `typescript` + dependencies are loaded on-demand using `dynamic import()` */
 async function generate(value: any, identifier = '') {
 	let { generateIdentifierDeclarationFile } = await import('dts-gen')
 	let output = generateIdentifierDeclarationFile(
