@@ -1,11 +1,9 @@
-#!/usr/bin/env node
-
 import * as dts from '.'
 import * as fs from 'fs-extra'
 import * as mri from 'mri'
 import * as path from 'path'
 
-process.nextTick(async () => {
+async function run() {
 	let argvs = mri(process.argv.slice(2))
 
 	let inputs = argvs._ as string[]
@@ -52,9 +50,11 @@ process.nextTick(async () => {
 
 	for (let value of values) {
 		try {
-			console.log(await dts(value.value, value.identifier))
+			console.log(await dts.generate(value.value, value.identifier))
 		} catch (error) {
 			console.error(`${value.identifier} -> %O`, error)
 		}
 	}
-})
+}
+
+run().catch((error) => console.error('dts-generate cli error ->', error))

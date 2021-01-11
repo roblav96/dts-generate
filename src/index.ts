@@ -13,7 +13,7 @@ function combine(value: any) {
 }
 
 /** `typescript` + dependencies are loaded on-demand using `dynamic import()` */
-async function generate(value: any, identifier = '') {
+export async function generate(value: any, identifier = '') {
 	let { generateIdentifierDeclarationFile } = await import('dts-gen')
 	let output = generateIdentifierDeclarationFile(
 		stringFn.pascalCase(identifier) || '____',
@@ -25,6 +25,3 @@ async function generate(value: any, identifier = '') {
 	output = output.trim()
 	return output
 }
-
-export = generate
-declare namespace generate {}
