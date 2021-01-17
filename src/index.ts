@@ -1,22 +1,26 @@
-/** `typescript` + dependencies are loaded on-demand using `await import(...)` */
-export async function generate(value: any, identifier = '') {
-	const _ = await import('lodash')
-	const stringFn = await import('string-fn')
+import isArray = require('lodash/isArray')
+import isNil = require('lodash/isNil')
+import isPlainObject = require('lodash/isPlainObject')
+import mapValues = require('lodash/mapValues')
+import merge = require('lodash/merge')
+import pickBy = require('lodash/pickBy')
+import { generateIdentifierDeclarationFile } from 'dts-gen'
+import { pascalCase } from 'pascal-case'
 
-	function combine(value: any) {
-		if (_.isArray(value) && value.find((v) => _.isPlainObject(v))) {
-			return [_.merge({}, ...value.map((v) => combine(v)))]
-		}
-		if (_.isPlainObject(value) && !_.isArray(value)) {
-			value = _.pickBy(value, (v) => !_.isNil(v))
-			return _.mapValues(value, (v) => combine(v))
-		}
-		return value
+function combine(value: any) {
+	if (isArray(value) && value.find((v) => isPlainObject(v))) {
+		return [merge({}, ...value.map((v) => combine(v)))]
 	}
+	if (isPlainObject(value) && !isArray(value)) {
+		value = pickBy(value, (v) => !isNil(v))
+		return mapValues(value, (v) => combine(v))
+	}
+	return value
+}
 
-	const { generateIdentifierDeclarationFile } = await import('dts-gen')
+export function generate(value: any, identifier = '') {
 	let output = generateIdentifierDeclarationFile(
-		stringFn.pascalCase(identifier) || '____',
+		identifier ? pascalCase(identifier) : '____',
 		combine(value),
 	) as string
 	output = output.replace(/[;]/g, '')
