@@ -1,6 +1,6 @@
 {
 	"name": "dts-generate",
-	"version": "1.16.0",
+	"version": "2.0.0",
 	"description": "Generate TypeScript definitions for anything",
 	"main": "dist/index.js",
 	"typings": "dist/index.d.ts",
@@ -9,13 +9,15 @@
 	],
 	"scripts": {
 		"prepublishOnly": "del dist; tsc --declaration",
-		"start": "node --require ts-node/register/transpile-only --require node-env-dev src/cli.ts",
-		"watch": "cross-env NODE_ENV=development nodemon --quiet --watch src --ext ts --exec 'node --inspect --require ts-node/register/transpile-only --require node-env-dev' src/cli.ts"
+		"start": "node --require ts-node/register/transpile-only --require node-env-dev src/test.ts",
+		"watch": "cross-env NODE_ENV=development nodemon --quiet --watch src --ext ts --exec 'node --inspect --require ts-node/register/transpile-only --require node-env-dev' src/test.ts"
 	},
 	"dependencies": {
+		"deepmerge": "^4.2.2",
 		"dts-gen": "^0.6.0",
-		"lodash": "^4.17.20",
-		"pascal-case": "^3.1.2"
+		"is-plain-obj": "^3.0.0",
+		"pascal-case": "^3.1.2",
+		"utils-merge": "^1.0.1"
 	},
 	"devDependencies": {
 		"@types/fs-extra": "^9.0.6",

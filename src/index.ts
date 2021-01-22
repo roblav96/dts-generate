@@ -1,19 +1,19 @@
-import isArray = require('lodash/isArray')
-import isNil = require('lodash/isNil')
-import isPlainObject = require('lodash/isPlainObject')
-import mapValues = require('lodash/mapValues')
-import merge = require('lodash/merge')
-import pickBy = require('lodash/pickBy')
+import * as deepmerge from 'deepmerge'
+import isPlainObj = require('is-plain-obj')
 import { generateIdentifierDeclarationFile } from 'dts-gen'
 import { pascalCase } from 'pascal-case'
 
 function combine(value: any) {
-	if (isArray(value) && value.find((v) => isPlainObject(v))) {
-		return [merge({}, ...value.map((v) => combine(v)))]
+	if (Array.isArray(value) && value.find((v) => isPlainObj(v))) {
+		return [deepmerge.all([{}, ...value.map((v) => combine(v))])]
 	}
-	if (isPlainObject(value) && !isArray(value)) {
-		value = pickBy(value, (v) => !isNil(v))
-		return mapValues(value, (v) => combine(v))
+	if (isPlainObj(value) && !Array.isArray(value)) {
+		return Object.entries(value).reduce((target, [key, value], index) => {
+			if (value === undefined || value === null) {
+				return target
+			}
+			return Object.assign(target, { [key]: combine(value) })
+		}, {})
 	}
 	return value
 }

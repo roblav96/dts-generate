@@ -1,10 +1,10 @@
 {
 	"compilerOptions": {
+		"inlineSourceMap": true,
 		"lib": ["esnext"],
 		"module": "commonjs",
 		"outDir": "dist",
-		"inlineSourceMap": true,
-		"target": "es2017"
+		"target": "es2020"
 	},
 	"include": ["src/**/*.d.ts", "src/**/*.ts"]
 }
