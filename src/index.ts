@@ -4,12 +4,12 @@ import { generateIdentifierDeclarationFile } from 'dts-gen'
 import { pascalCase } from 'pascal-case'
 
 function combine(value: any) {
-	if (Array.isArray(value) && value.find((v) => isPlainObj(v))) {
+	if (Array.isArray(value) && value.some((v) => isPlainObj(v))) {
 		return [deepmerge.all([{}, ...value.map((v) => combine(v))])]
 	}
 	if (isPlainObj(value) && !Array.isArray(value)) {
 		return Object.entries(value).reduce((target, [key, value], index) => {
-			if (value === undefined || value === null) {
+			if (value === undefined) {
 				return target
 			}
 			return Object.assign(target, { [key]: combine(value) })
